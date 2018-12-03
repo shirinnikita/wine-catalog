@@ -1,0 +1,11 @@
+cache_key=446940327868b531465e2bf618e0479850dfff0bb812c91727ea
+https://www.vivino.com/api/regions/
+https://www.vivino.com/api/grapes/
+https://www.vivino.com/api/countries
+https://www.vivino.com/api/wine_styles/
+https://www.vivino.com/api/foods/
+https://www.vivino.com/api/session/
+https://www.vivino.com/api/vintages/1573327/highlights
+https://www.vivino.com/api/explore/explore?country_code=ru&currency_code=RUB&grape_filter=varietal&merchant_id=&min_rating=3.5&order_by=&order=desc&page=1&price_range_max=1000&price_range_min=250&wine_type_ids[]=1&wine_type_ids[]=2
+
+https://www.vivino.com/api/wines/92908/reviews?year=2016&page=1
