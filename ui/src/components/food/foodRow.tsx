@@ -2,21 +2,21 @@ import * as React from 'react';
 import { FoodPiece } from '../../model';
 
 interface Props {
-  foodpiece: FoodPiece;
+  foodPiece: FoodPiece;
 }
 
-export const FoodRow: React.StatelessComponent<Props> = ({foodpiece}) => {
+export const FoodRow: React.StatelessComponent<Props> = ({foodPiece}) => {
   return (
     <tr>
       <td>
-        <span>{foodpiece.id}</span>
+        <span>{foodPiece.id}</span>
       </td>
       <td>
-        <span>{foodpiece.name}</span>
+        <span>{foodPiece.name}</span>
       </td>
       <td>
 
-        <img src={foodpiece.img} className="avatar" />
+        <img src={foodPiece.img} className="avatar" />
       </td>
     </tr>
   );

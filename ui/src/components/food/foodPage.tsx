@@ -5,7 +5,7 @@ import { FoodHeader } from './foodHeader';
 import { FoodRow } from './foodRow';
 
 interface State {
-  foodpieces: FoodPiece[];
+  foodPieces: FoodPiece[];
 }
 interface Props {
 
@@ -13,13 +13,13 @@ interface Props {
 export class FoodPage extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { foodpieces: [] };
+    this.state = { foodPieces: [] };
   }
 
   public componentDidMount() {
     API.fetchFood()
-      .then((foodpieces) => {
-        this.setState({ foodpieces });
+      .then((res) => {
+        this.setState({ foodPieces: res });
       });
   }
 
@@ -33,10 +33,10 @@ export class FoodPage extends React.Component<Props, State> {
           </thead>
           <tbody>
             {
-              this.state.foodpieces.map((foodpiece) =>
+              this.state.foodPieces.map((foodPiece) =>
                 <FoodRow
-                  key={foodpiece.id}
-                  foodpiece={foodpiece}
+                  key={foodPiece.id}
+                  foodPiece={foodPiece}
                 />
               )
             }
