@@ -16,12 +16,13 @@ CORS(app)
 
 # reflection
 
-db.Model = automap_base(db.Model)
+Base = automap_base()
 
-db.Model.prepare(db.engine, reflect=True)
+Base.prepare(db.engine, reflect=True)
 
-Food = db.Model.classes['food']
-Vintages = db.Model.classes['vintages']
+Food = Base.classes['food']
+Vintages = Base.classes['vintages']
+Wines = Base.classes['wines']
 
 ma = Marshmallow(app)
 
@@ -35,9 +36,19 @@ food_schema = FoodSchema()
 foods_schema = FoodSchema(many=True)
 
 
+class WineSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'seo_name', 'style', 'region_id', 'winery_id')
+
+
+wine_schema = WineSchema()
+wines_schema = WineSchema(many=True)
+
+
 class VintageSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'seo_name', 'year', 'wine_id', 'img')
+#    wine_id = ma.Nested(WineSchema, many=False)
 
 
 vintage_schema = VintageSchema()
@@ -47,6 +58,7 @@ vintages_schema = VintageSchema(many=True)
 @app.route('/api/list_food', methods=['GET', 'POST'])
 def list_food():
     sample = db.session.query(Food).all()
+
     return jsonify(foods_schema.dump(sample).data)
 
 
@@ -55,10 +67,9 @@ def list_vintages():
     ss = request.json.get('nameFilter', '').lower()
     print(ss)
     sample = db.session.query(Vintages).filter(func.lower(Vintages.name).contains(ss)).all()
-    a = jsonify(vintages_schema.dump(sample).data)
-    print(a)
-    return a
+    return jsonify(vintages_schema.dump(sample).data)
 
 
 if __name__ == '__main__':
+    print(Vintages)
     app.run()

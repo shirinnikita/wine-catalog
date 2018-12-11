@@ -18,7 +18,11 @@ export class VintagePage extends React.Component<Props, State> {
   }
 
   public getNewData(promise : Promise<Vintage[]>) {
-    promise.then(res => this.setState({vintages: res}))
+    promise.then(res => {
+      console.log(res);
+      this.setState({vintages: res})
+    }
+    )
   }
 
   public render() {
