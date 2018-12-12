@@ -21,6 +21,10 @@ export const VintageRow: React.StatelessComponent<Props> = ({vintage}) => {
 
         <img src={vintage.img} className="avatar" />
       </td>
+             <td>
+
+        <span>{JSON.stringify(vintage)}</span>
+      </td>
     </tr>
   );
 };

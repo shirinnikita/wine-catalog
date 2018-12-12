@@ -37,6 +37,8 @@ export class VintagePage extends React.Component<Props, State> {
       <th>Name</th>
       <th>Year</th>
       <th>Img</th>
+
+      <th>Wines</th>
     </tr>
           </thead>
           <tbody>

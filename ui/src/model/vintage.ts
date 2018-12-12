@@ -3,4 +3,5 @@ export interface Vintage {
   name: string;
   year: string;
   img: string;
+  wines: {};
 }
