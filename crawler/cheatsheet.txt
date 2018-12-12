@@ -9,5 +9,6 @@ https://www.vivino.com/api/vintages/1573327/highlights
 https://www.vivino.com/api/explore/explore?country_code=ru&currency_code=RUB&grape_filter=varietal&merchant_id=&min_rating=3.5&order_by=&order=desc&page=1&price_range_max=1000&price_range_min=250&wine_type_ids[]=1&wine_type_ids[]=2
 
 https://www.vivino.com/api/wines/92908/reviews?year=2016&page=1
-
+https://www.vivino.com/api/wines/1144176/wine_page_information
 https://www.vivino.com/wineries/{}/wines/{}
+https://www.vivino.com/api/prices?vintage_ids[]=138629233&vintage_ids[]=4665503&vintage_ids[]=6809728&vintage_ids[]=4650960&vintage_ids[]=3974206&vintage_ids[]=148023895&vintage_ids[]=4648065&vintage_ids[]=144748360&vintage_ids[]=6997454&vintage_ids[]=4337884&vintage_ids[]=14187320&vintage_ids[]=147802134&vintage_ids[]=10571245&vintage_ids[]=1407719&vintage_ids[]=2487879&vintage_ids[]=141197119&vintage_ids[]=11709392&vintage_ids[]=149014401&vintage_ids[]=152357820&vintage_ids[]=142448200&vintage_ids[]=4647090&vintage_ids[]=151808092&vintage_ids[]=120986230&vintage_ids[]=2433465&vintage_ids[]=21011146

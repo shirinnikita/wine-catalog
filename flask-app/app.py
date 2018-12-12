@@ -10,6 +10,7 @@ app.debug = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:pass@localhost:5432/test'
 db = SQLAlchemy(app)
 
+PAGESIZE = 10
 # FIX
 CORS(app)
 
@@ -45,8 +46,15 @@ Base.prepare(db.engine, reflect=True)
 Food = Base.classes['food']
 Vintages = Base.classes['vintages']
 Wines = Base.classes['wines']
+Grapes = Base.classes['grapes']
+Styles = Base.classes['styles']
 
 ma = Marshmallow(app)
+
+
+class StyleSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name')
 
 
 class FoodSchema(ma.Schema):
@@ -77,17 +85,38 @@ vintage_schema = VintageSchema()
 vintages_schema = VintageSchema(many=True)
 
 
+class GrapeSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'seo_name', 'styles_collection')
+    styles_collection = ma.Nested(StyleSchema, many=True)
+
+
+grape_schema = GrapeSchema()
+grapes_schema = GrapeSchema(many=True)
+
+
 @app.route('/api/list_food', methods=['GET', 'POST'])
 def list_food():
     sample = db.session.query(Food).all()
     return jsonify(foods_schema.dump(sample).data)
 
 
+@app.route('/api/list_grapes', methods=['GET', 'POST'])
+def list_grapes():
+    sample = db.session.query(Grapes).all()
+    return jsonify(grapes_schema.dump(sample).data)
+
+
 @app.route('/api/list_vintages', methods=['GET', 'POST'])
 def list_vintages():
     ss = request.json.get('nameFilter', '').lower()
-    print(ss)
-    sample = db.session.query(Vintages).filter(func.lower(Vintages.name).contains(ss)).all()
+    page = request.json.get('page', '')
+    print("PAGE TYPE IS {}".format(type(page)))
+    sample = db.session.query(Vintages) \
+        .filter(func.lower(Vintages.name).contains(ss)) \
+        .limit(PAGESIZE) \
+        .offset(page * PAGESIZE) \
+        .all()
     return jsonify(vintages_schema.dump(sample).data)
 
 

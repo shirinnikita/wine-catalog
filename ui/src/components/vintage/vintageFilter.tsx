@@ -4,6 +4,7 @@ import { API } from '../../api';
 
 interface VintageFilterState {
   nameFilter : string;
+  page : number;
 }
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 export class VintageFilter extends React.Component <Props, VintageFilterState> {
   constructor(props) {
       super(props);
-      this.state = { nameFilter : ''};
+      this.state = { nameFilter : '', page : 0};
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
   }
