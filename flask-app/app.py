@@ -48,6 +48,7 @@ Vintages = Base.classes['vintages']
 Wines = Base.classes['wines']
 Grapes = Base.classes['grapes']
 Styles = Base.classes['styles']
+Regions = Base.classes['regions']
 
 ma = Marshmallow(app)
 
@@ -94,7 +95,6 @@ class VintageSchema(ma.Schema):
     wines = ma.Nested(WineSchema)
 
 
-
 vintage_schema = VintageSchema()
 
 
@@ -131,14 +131,24 @@ def list_grapes():
 
 @app.route('/api/list_vintages', methods=['GET', 'POST'])
 def list_vintages():
+    filters = []
     ss = request.json.get('nameFilter', '').lower()
-    page = request.json.get('page', '')
-    print("PAGE TYPE IS {}".format(type(page)))
-    sample = db.session.query(Vintages) \
-        .filter(func.lower(Vintages.name).contains(ss)) \
-        .limit(PAGESIZE) \
-        .offset(page * PAGESIZE) \
-        .all()
+    type_filters = request.json.get('types', [])
+
+    if type_filters:
+        filters.append(
+                db.session.query(Vintages)
+                .join(Wines)
+                .filter(Wines.type_id.in_(type_filters))
+        )
+
+    if ss:
+        filters.append(
+                db.session.query(Vintages)
+                .filter(func.lower(Vintages.name).contains(ss))
+        )
+
+    sample = db.session.query(Vintages).intersect(*filters).all()
     return jsonify(vintages_schema.dump(sample).data)
 
 
