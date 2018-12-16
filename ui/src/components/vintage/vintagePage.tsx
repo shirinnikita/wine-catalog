@@ -1,58 +1,49 @@
-import * as React from 'react';
-import { Vintage } from '../../model';
-import { VintageRow } from './vintageRow';
-import { VintageFilter} from "./vintageFilter";
-
-interface State {
-  vintages: Vintage[];
-}
+import React, {Component} from 'react';
+import { RouteComponentProps } from 'react-router';
+import { Review } from '../../model'
+import {formatError} from "awesome-typescript-loader/dist/helpers";
 
 interface Props {
 
 }
-export class VintagePage extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = { vintages: [] };
-    this.getNewData = this.getNewData.bind(this)
-  }
 
-  public getNewData(promise : Promise<Vintage[]>) {
-    promise.then(res => {
-      console.log(res);
-      this.setState({vintages: res})
+interface State {
+    img: string;
+    name: string;
+    year: string;
+    reviews_collection : Review[]
+}
+
+interface Params {
+    id : string
+}
+
+
+
+export class VintagePage extends Component<RouteComponentProps & Props, State>{
+      constructor(props) {
+          super(props);
+          this.state = { img: '', name: '', year: '', reviews_collection: []};
+      }
+    componentDidMount() {
+        console.log('MOUNTING')
+        fetch(
+            `http://localhost:5000/api/vintage/${(this.props.match.params as Params).id}`,
+
+          ).then(response => response.json())
+            .then(r => this.setState(r));
+        console.log("DONE")
     }
-    )
-  }
 
-  public render() {
-    return (
-      <div className="row">
-        <h2>Vintages</h2>
-        <VintageFilter sendNewData={this.getNewData}/>
-        <table className="table">
-          <thead>
-                <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Year</th>
-      <th>Img</th>
+    static formatReview(review : Review) {
+        return (
+            <div key={review.id}>
+                {JSON.stringify(review)}
+            </div>
+        )
+    }
+    render() {
+        return this.state.reviews_collection.map(VintagePage.formatReview);
 
-      <th>Wines</th>
-    </tr>
-          </thead>
-          <tbody>
-            {
-              this.state.vintages.map((vintage) =>
-                <VintageRow
-                  key={vintage.id}
-                  vintage={vintage}
-                />
-              )
-            }
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-};
+    }
+}

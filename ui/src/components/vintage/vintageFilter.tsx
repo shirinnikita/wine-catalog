@@ -1,6 +1,10 @@
-import * as React from 'react';
-import { Vintage } from '../../model';
-import { API } from '../../api';
+import React, {Component} from 'react';
+import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+
 
 interface VintageFilterState {
   nameFilter : string;
@@ -11,18 +15,16 @@ interface Props {
     sendNewData
 
 }
-export class VintageFilter extends React.Component <Props, VintageFilterState> {
+export class VintageFilter extends Component <Props, VintageFilterState> {
   constructor(props) {
       super(props);
       this.state = { nameFilter : '', page : 0};
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
   }
-  componentWillMount(): void {
-      this.handleSubmit()
-  }
 
-    handleSubmit() {
+    handleSubmit(e) {
+      e.preventDefault();
       const promise = fetch(
           'http://localhost:5000/api/list_vintages',
 
@@ -40,18 +42,22 @@ export class VintageFilter extends React.Component <Props, VintageFilterState> {
     }
 
   handleChange(e) {
+
+    e.preventDefault();
     this.setState({nameFilter: e.target.value});
   }
 
   render() {
     return (
         <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={this.state.nameFilter} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Find" />
-      </form>
+            <FormControl>
+          <InputLabel htmlFor="component-simple">Name</InputLabel>
+            <Input type="text" value={this.state.nameFilter} onChange={this.handleChange} />
+            </FormControl>
+            <Button type="submit" variant="contained" >
+                Search
+            </Button>
+            </form>
     );
   }
 }

@@ -62,6 +62,11 @@ class FoodSchema(ma.Schema):
         fields = ('id', 'name', 'seo_name', 'img')
 
 
+class ReviewSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'user_id', 'vintage_id', 'note', 'rating')
+
+
 food_schema = FoodSchema()
 foods_schema = FoodSchema(many=True)
 
@@ -75,14 +80,25 @@ wine_schema = WineSchema()
 wines_schema = WineSchema(many=True)
 
 
-class VintageSchema(ma.Schema):
+class VintagesSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'seo_name', 'year', 'wine_id', 'img', 'wines')
-    wines = ma.Nested(WineSchema, many=False)
+    wines = ma.Nested(WineSchema)
+
+
+class VintageSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'seo_name', 'year', 'wine_id', 'img', 'wines', 'reviews_collection')
+
+    reviews_collection = ma.Nested(ReviewSchema, many=True)
+    wines = ma.Nested(WineSchema)
+
 
 
 vintage_schema = VintageSchema()
-vintages_schema = VintageSchema(many=True)
+
+
+vintages_schema = VintagesSchema(many=True)
 
 
 class GrapeSchema(ma.Schema):
@@ -93,6 +109,12 @@ class GrapeSchema(ma.Schema):
 
 grape_schema = GrapeSchema()
 grapes_schema = GrapeSchema(many=True)
+
+
+@app.route('/api/vintage/<vintage_id>', methods=['GET'])
+def get_vintage(vintage_id):
+    vintage = db.session.query(Vintages).filter(Vintages.id == vintage_id).first()
+    return jsonify(vintage_schema.dump(vintage).data)
 
 
 @app.route('/api/list_food', methods=['GET', 'POST'])

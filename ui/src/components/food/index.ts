@@ -1,1 +1,4 @@
-export * from './foodPage';
+import {FoodPage} from "./foodPage";
+
+
+export default FoodPage;

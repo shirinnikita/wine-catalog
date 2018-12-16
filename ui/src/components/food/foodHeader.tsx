@@ -1,11 +1,14 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 
-export const FoodHeader: React.StatelessComponent<{}> = () => {
-  return (
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Img</th>
-    </tr>
-  );
-};
+export class FoodHeader extends Component {
+    render() {
+        return (
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Img</th>
+            </tr>
+        )
+
+    }
+}

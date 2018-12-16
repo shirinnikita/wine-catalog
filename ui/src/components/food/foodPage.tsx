@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FoodPiece } from '../../model';
-import { API } from '../../api';
 import { FoodHeader } from './foodHeader';
 import { FoodRow } from './foodRow';
 
@@ -17,10 +16,11 @@ export class FoodPage extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-    API.fetchFood()
-      .then((res) => {
-        this.setState({ foodPieces: res });
-      });
+    fetch('http://localhost:5000/api/list_food')
+        .then(response => response.json())
+        .then((res) => {
+          this.setState({ foodPieces: res });
+        });
   }
 
   public render() {

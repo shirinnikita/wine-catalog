@@ -26,6 +26,7 @@ module.exports = {
   output: {
     path: path.join(basePath, 'dist'),
     filename: '[name].js',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -55,6 +56,7 @@ module.exports = {
   devServer: {
     port: 8080,
     noInfo: true,
+    historyApiFallback: true,
   },
   plugins: [
     //Generate index.html in /dist => https://github.com/ampedandwired/html-webpack-plugin

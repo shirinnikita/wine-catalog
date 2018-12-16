@@ -1,1 +1,2 @@
-export * from './vintagePage';
+export {VintagesPage} from './vintagesPage';
+export {VintagePage} from './vintagePage'
