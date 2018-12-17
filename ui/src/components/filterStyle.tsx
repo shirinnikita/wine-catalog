@@ -35,7 +35,7 @@ interface Params {
 
 
 
-export class GrapesFilter extends Component<RouteComponentProps & Props, State> {
+export class StylesFilter extends Component<RouteComponentProps & Props, State> {
     constructor(props) {
         super(props);
         this.state = {elems: [], nameFilter: ''};
@@ -44,7 +44,7 @@ export class GrapesFilter extends Component<RouteComponentProps & Props, State> 
 
     componentWillMount() {
         fetch(
-            'http://localhost:5000/api/gv/' + String((this.props.match.params as Params).id),
+            'http://localhost:5000/api/st/' + String((this.props.match.params as Params).id),
             {
                 headers:
                     {
@@ -101,4 +101,4 @@ export class GrapesFilter extends Component<RouteComponentProps & Props, State> 
 };
 
 
-export default GrapesFilter;
+export default StylesFilter;

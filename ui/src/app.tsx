@@ -5,11 +5,15 @@ import {createMuiTheme} from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 
 import GrapesPage from './components/grapes'
-import FoodPage from "./components/food";
 import {VintagePage, VintagesPage} from "./components/vintage";
+import {FoodsPage} from "./components/foods";
 
 import Navigation from "./components/navigation";
 import Error from "./components/error"
+import {GrapesFilter} from './components/filterGrapes'
+import FoodFilter from "./components/filterFood";
+import {StylesFilter} from "./components/filterStyle";
+import StylesPage from "./components/styles";
 
 
 const theme = createMuiTheme({
@@ -66,10 +70,19 @@ class App extends Component {
                     <Navigation/>
                     <Switch>
                         <Route path="/" component={VintagesPage} exact />
-                        <Route path="/food_page" component={FoodPage}/>
+                        <Route path="/food_page" component={FoodsPage}/>
                         <Route path="/vintages_page" component={VintagesPage}/>
                         <Route path="/grapes_page" component={GrapesPage}/>
+                        <Route path="/styles_page" component={StylesPage}/>
+
+
+                        <Route path="/grapes_page" component={GrapesPage}/>
                         <Route path="/vintage/:id" component={VintagePage}/>
+
+                        <Route path="/filter_foods/:id" component={FoodFilter}/>
+                        <Route path="/filter_styles/:id" component={StylesFilter}/>
+
+                        <Route path="/filter_grapes/:id" component={GrapesFilter}/>
                         <Route component={Error}/>
                     </Switch>
                 </MuiThemeProvider>

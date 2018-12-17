@@ -116,6 +116,12 @@ def list_regions():
     return jsonify(FoodSchema(many=True).dump(sample).data)
 
 
+@app.route('/api/list_wines', methods=['GET', 'POST'])
+def list_wines():
+    sample = db.session.query(Wines).all()
+    return jsonify(Wines(many=True).dump(sample).data)
+
+
 @app.route('/api/vintage/<vintage_id>', methods=['GET'])
 def get_vintage(vintage_id):
     vintage = db.session.query(Vintages).filter(Vintages.id == vintage_id).first()
@@ -123,8 +129,47 @@ def get_vintage(vintage_id):
 
 
 @app.route('/api/gv/<grapes_id>', methods=['GET'])
-def grapes_filter(grapes_id):
-    sample = db.session.query(Vintages).filter(Vintages.wines.style_collection.grapes == grapes_id).all()
+def food_filter(grapes_id):
+    sample = (
+        db.session.query(Vintages)
+        .join(Wines)
+        .join(Styles)
+        .filter(Styles.grapes_collection.any(Grapes.id == grapes_id))
+        .all()
+    )
+    return jsonify(VintagesSchema(many=True).dump(sample).data)
+
+
+@app.route('/api/st/<st_id>', methods=['GET'])
+def st_filter(st_id):
+    sample = (
+        db.session.query(Vintages)
+        .join(Wines)
+        .filter(Wines.style == st_id)
+        .all()
+    )
+    return jsonify(VintagesSchema(many=True).dump(sample).data)
+
+
+@app.route('/api/fd/<food_id>', methods=['GET'])
+def grapes_filter(food_id):
+    sample = (
+        db.session.query(Vintages)
+        .join(Wines)
+        .join(Styles)
+        .filter(Styles.food_collection.any(Food.id == food_id))
+        .all()
+    )
+    return jsonify(VintagesSchema(many=True).dump(sample).data)
+
+
+@app.route('/api/wn/<wine_id>', methods=['GET'])
+def wine_filter(wine_id):
+    sample = (
+        db.session.query(Vintages)
+        .filter(Vintages.wine_id == wine_id)
+        .all()
+    )
     return jsonify(VintagesSchema(many=True).dump(sample).data)
 
 
@@ -132,6 +177,12 @@ def grapes_filter(grapes_id):
 def list_food():
     sample = db.session.query(Food).all()
     return jsonify(FoodSchema(many=True).dump(sample).data)
+
+
+@app.route('/api/list_styles', methods=['GET', 'POST'])
+def list_styles():
+    sample = db.session.query(Styles).all()
+    return jsonify(StyleSchema(many=True).dump(sample).data)
 
 
 @app.route('/api/list_grapes', methods=['GET', 'POST'])
@@ -177,12 +228,18 @@ def list_vintages():
 
     query = db.session.query(Vintages).intersect(*filters)
 
-    # if sort_type == 1:
-    #     query = query.order_by(Vintages.price.asc())
-    # elif sort_type == 2:
-    #     query = query.order_by(Vintages.price.desc())
-    # elif sort_type == 3:
-    #
+    if sort_type == 1:
+        query = query.order_by(Vintages.price.asc())
+    elif sort_type == 2:
+        query = query.order_by(Vintages.price.desc())
+    elif sort_type == 3:
+        query = query.filter(Vintages.ratings_count > 0).order_by((Vintages.ratings_sum / Vintages.ratings_count).asc())
+    elif sort_type == 4:
+        query = query.filter(Vintages.ratings_count > 0).order_by((Vintages.ratings_sum / Vintages.ratings_count).desc())
+    elif sort_type == 5:
+        query = query.order_by(Vintages.ratings_count.asc())
+    elif sort_type == 6:
+        query = query.order_by(Vintages.ratings_count.desc())
 
     return jsonify(VintagesSchema(many=True).dump(query.all()).data)
 

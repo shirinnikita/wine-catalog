@@ -84,23 +84,28 @@ export class VintagePage extends Component<RouteComponentProps & Props, Vintage>
     }
 
     render() {
-        console.log(this.state.ratings_count);
         return (<div style={{display: 'flex'}}>
                 <Paper style={{minWidth: '20em'}}>
                     <img style={{marginLeft: 'auto', marginRight: 'auto'}} src={this.state.img}/>
                     <Divider/>
-                    {'Made of:'}
-                    {this.state.wines.styles.grapes_collection.map((g) => {
-                        return <Link to={`/${g.id}`}> {g.name}</Link>
-                    })}
-                    <Divider/>
+                    {this.state.wines.style ?
+                        <div>{'Made of:'}
+                        {
+                            this.state.wines.styles.grapes_collection.map((g) => {
+                                return <Link to={`/filter_grapes/${g.id}`}> {g.name}</Link>
+                            })
+                        }
+                        <Divider/>
                     {'Good complements are:'}
                     {this.state.wines.styles.food_collection.map((fp) => {
-                        return <Link to={`/${fp.id}`}> {fp.name}</Link>
+                        return <Link to={`/filter_foods/${fp.id}`}> {fp.name}</Link>
                     })}
-                    <Divider/>
+                        <Divider/>
                     {'More with style'}
-                    <Link to={`/${this.state.wines.style}`}> {this.state.wines.styles.name}</Link>
+                            <Link to={`/${this.state.wines.style}`}> {this.state.wines.styles.name}</Link></div>
+                        :
+                        'No style'
+                    }
                     <Divider/>
                     {this.state.price != 0 ?
                         (<div><Typography variant="h4" gutterBottom> {`${this.state.price}₽`}</Typography>
