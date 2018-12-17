@@ -1,7 +1,15 @@
+import {Review} from "./review";
+import {Wine} from "./wine";
+
 export interface Vintage {
-  id: number;
+  id: string;
   name: string;
   year: string;
   img: string;
-  wines: {};
+  wines: Wine;
+
+  ratings_count: number;
+  ratings_sum: number;
+  price: number;
+  reviews_collection: Review[],
 }

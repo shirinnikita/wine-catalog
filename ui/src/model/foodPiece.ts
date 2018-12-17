@@ -1,5 +1,5 @@
 export interface FoodPiece {
-  id: number;
+  id: string;
   name: string;
   img: string;
 }

@@ -14,12 +14,16 @@ class Navigation extends Component {
                <Typography variant="h6" color="inherit" noWrap >
                    Wine catalog
                </Typography>
-               <NavLink to="/food_page" style={{ textDecoration: 'none' }}>
-                   <Button>Food</Button>
-               </NavLink>
                <NavLink to="/vintages_page" style={{ textDecoration: 'none' }} >
                    <Button>Vintages</Button>
                </NavLink>
+               <NavLink to="/food_page" style={{ textDecoration: 'none' }}>
+                   <Button>Food</Button>
+               </NavLink>
+               <NavLink to="/grapes_page" style={{ textDecoration: 'none' }}>
+                   <Button>Grapes</Button>
+               </NavLink>
+
            </Toolbar>
        </AppBar>)
 

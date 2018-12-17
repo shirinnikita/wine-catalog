@@ -6,6 +6,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
 
 
 import {Vintage} from '../../model';
@@ -25,13 +27,12 @@ interface Props3 {
     vintage: Vintage;
 }
 
-const VintageRow: FunctionComponent<Props3> = ({vintage}) => {
+export const VintageRow: FunctionComponent<Props3> = ({vintage}) => {
     return (
         <TableRow>
-            <TableCell>
-                {vintage.id}
+           <TableCell>
+                <img src={vintage.img} className="avatar"/>
             </TableCell>
-
             <TableCell>
                 <Link to={`/vintage/${vintage.id}`}>{vintage.name}</Link>
             </TableCell>
@@ -39,11 +40,24 @@ const VintageRow: FunctionComponent<Props3> = ({vintage}) => {
             <TableCell>
                 {vintage.year}
             </TableCell>
-
             <TableCell>
-                <img src={vintage.img} className="avatar"/>
+                {`${vintage.price}₽`}
             </TableCell>
+            <TableCell>
 
+                {(
+                    vintage.ratings_count
+                        ?
+                        <div>
+                        <Typography variant="h4" gutterBottom>
+                            {(vintage.ratings_sum / vintage.ratings_count).toFixed(1)}
+                        </Typography>
+                            {`Over ${vintage.ratings_count} reviews`}
+                        </div>
+                        :
+                        'No reviews yet')}
+
+            </TableCell>
         </TableRow>
     );
 };
@@ -69,17 +83,18 @@ export class VintagesPage extends Component<Props, State> {
             <Fragment>
                 <VintageFilter sendNewData={this.getNewData}/>
                 <Paper>
+                    {`Found ${this.state.vintages.length} vintages`}
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>1</TableCell>
-                                <TableCell>2</TableCell>
-                                <TableCell>3</TableCell>
-                                <TableCell>4</TableCell>
+                                <TableCell>Label</TableCell>
+                                <TableCell>Wine</TableCell>
+                                <TableCell>Year</TableCell>
+                                <TableCell>Price</TableCell>
+                                <TableCell>Rating</TableCell>
                             </TableRow>
                         </TableHead>
-
-                        <TableBody>
+                        {this.state.vintages.length > 0 ? <TableBody>
                             {
                                 this.state.vintages.map((vintage) =>
                                     <VintageRow
@@ -89,6 +104,11 @@ export class VintagesPage extends Component<Props, State> {
                                 )
                             }
                         </TableBody>
+                            :
+                            'No vintages found'
+                        }
+
+
                     </Table>
                 </Paper>
             </Fragment>

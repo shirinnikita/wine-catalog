@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { FoodPiece } from '../../model';
-import { FoodHeader } from './foodHeader';
 import { FoodRow } from './foodRow';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+
 
 interface State {
   foodPieces: FoodPiece[];
@@ -25,14 +31,17 @@ export class FoodPage extends React.Component<Props, State> {
 
   public render() {
     return (
-      <div className="row">
-        <h2>Food list</h2>
-        <table className="table">
-          <thead>
-            <FoodHeader />
-          </thead>
-          <tbody>
-            {
+        <Paper>
+            <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>1</TableCell>
+                                <TableCell>2</TableCell>
+                                <TableCell>3</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        {this.state.foodPieces.length > 0 ? <TableBody>
+                            {
               this.state.foodPieces.map((foodPiece) =>
                 <FoodRow
                   key={foodPiece.id}
@@ -40,9 +49,15 @@ export class FoodPage extends React.Component<Props, State> {
                 />
               )
             }
-          </tbody>
-        </table>
-      </div>
+
+                        </TableBody>
+                            :
+                            'No vintages found'
+                        }
+
+
+                    </Table>
+        </Paper>
     );
   }
 };

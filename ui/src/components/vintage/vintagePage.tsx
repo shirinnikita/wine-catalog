@@ -8,18 +8,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
+import {Vintage} from '../../model'
 
 import Typography from '@material-ui/core/Typography';
+import {Link} from "react-router-dom";
 
 interface Props {
 
-}
-
-interface State {
-    img: string;
-    name: string;
-    year: string;
-    reviews_collection: Review[]
 }
 
 interface Params {
@@ -27,83 +22,113 @@ interface Params {
 }
 
 
-export class VintagePage extends Component<RouteComponentProps & Props, State> {
+export class VintagePage extends Component<RouteComponentProps & Props, Vintage> {
     constructor(props) {
         super(props);
         this.state = {
-            img: 'https://cdn.newsapi.com.au/image/v1/9fdbf585d17c95f7a31ccacdb6466af9',
-            name: 'TestName', year: 'TestYear', reviews_collection: [
-                {
-                    id: 10,
-                    user_id: 10,
-                    vintage_id: 10,
-                    note: 'hello',
-                    rating: 3,
-                },
-                {
-                    id: 10,
-                    user_id: 10,
-                    vintage_id: 10,
-                    note: 'hello',
-                    rating: 3,
-                },
-                {
-                    id: 10,
-                    user_id: 10,
-                    vintage_id: 10,
-                    note: 'hello',
-                    rating: 3,
-                },
-                {
-                    id: 10,
-                    user_id: 10,
-                    vintage_id: 10,
-                    note: 'hello',
-                    rating: 3,
-                },
-            ]
-        };
+            id: '',
+            wines: {
+                id: '',
+                name: '',
+                style: '',
+                ratings_count: 0,
+                ratings_sum: 0,
+                styles: {name: '', food_collection: [], grapes_collection: []}
+            },
+            img: '',
+            name: '',
+            year: '',
+            reviews_collection: [],
+            ratings_count: 0,
+            ratings_sum: 0,
+            price: 0
+        }
     }
 
-    // componentDidMount() {
-    //     console.log('MOUNTING')
-    //     fetch(
-    //         `http://localhost:5000/api/vintage/${(this.props.match.params as Params).id}`,
-    //     ).then(response => response.json())
-    //         .then(r => this.setState(r));
-    //     console.log("DONE")
-    // }
+
+    componentWillMount() {
+        fetch(
+            'http://localhost:5000/api/vintage/' + String((this.props.match.params as Params).id),
+            {
+                headers:
+                    {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+            }
+        ).then(response => response.json())
+            .then(r => this.setState(r));
+    }
 
     static formatReview(review: Review) {
         return (<div>
-            <ListItem key={review.id} style={{alignItems: "flex-start"}}>
-        <ListItemText
-          primary={JSON.stringify(review)}
-          secondary={
-            <React.Fragment>
-              <Typography component="span" style={{display: 'inline'}} color="textPrimary">
-                {JSON.stringify(review)}
-              </Typography>
-              {JSON.stringify(review)}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-            <Divider /></div>
+                <ListItem key={review.id} style={{alignItems: "flex-start"}}>
+
+                    <ListItemAvatar>
+                        <Avatar src={review.users.img}/>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={`${review.users.alias}, ${review.rating}`}
+                        secondary={
+                            <React.Fragment>
+                                <Typography component="span" style={{display: 'inline'}} color="textPrimary">
+                                    {review.note}
+                                </Typography>
+
+                            </React.Fragment>
+                        }
+                    />
+                </ListItem>
+                <Divider/></div>
         )
     }
 
     render() {
-
+        console.log(this.state.ratings_count);
         return (<div style={{display: 'flex'}}>
-                        <Paper>
-                            <img style={{height: 200, width: 200}} src={this.state.img}/>
-                        </Paper>
-                        <Paper>
-                            <List>
-                            {this.state.reviews_collection.map(VintagePage.formatReview)}
-                            </List>
-                        </Paper>
+                <Paper style={{minWidth: '20em'}}>
+                    <img style={{marginLeft: 'auto', marginRight: 'auto'}} src={this.state.img}/>
+                    <Divider/>
+                    {'Made of:'}
+                    {this.state.wines.styles.grapes_collection.map((g) => {
+                        return <Link to={`/${g.id}`}> {g.name}</Link>
+                    })}
+                    <Divider/>
+                    {'Good complements are:'}
+                    {this.state.wines.styles.food_collection.map((fp) => {
+                        return <Link to={`/${fp.id}`}> {fp.name}</Link>
+                    })}
+                    <Divider/>
+                    {'More with style'}
+                    <Link to={`/${this.state.wines.style}`}> {this.state.wines.styles.name}</Link>
+                    <Divider/>
+                    {this.state.price != 0 ?
+                        (<div><Typography variant="h4" gutterBottom> {`${this.state.price}₽`}</Typography>
+                            < Divider/>
+                            </div>)
+                        :
+                        <div/>
+                    }
+                    {(
+                        this.state.ratings_count
+                            ?
+                            <div>
+                                <Typography variant="h4" gutterBottom>
+                                    {(this.state.ratings_sum / this.state.ratings_count).toFixed(1)}
+                                </Typography>
+                                {`Over ${this.state.ratings_count} reviews`}
+                            </div>
+                            :
+                            'No reviews yet')}
+                    <Divider/>
+                    <Link to={`/${this.state.wines.id}`}> More years</Link>
+
+                </Paper>
+                <Paper>
+                    <List>
+                        {this.state.reviews_collection.map(VintagePage.formatReview)}
+                    </List>
+                </Paper>
             </div>
         );
 

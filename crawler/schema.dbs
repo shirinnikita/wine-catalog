@@ -1,0 +1,2616 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="1233.sql" id="Project_430664f" template="Default" database="PostgreSQL" >
+	<schema name="public" schemaname="public" >
+		<table name="countries" >
+			<column name="code" type="text" jt="12" mandatory="y" />
+			<column name="name" type="text" jt="12" />
+			<index name="pk_countries_code" unique="PRIMARY_KEY" >
+				<column name="code" />
+			</index>
+		</table>
+		<table name="food" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="name" type="text" jt="12" mandatory="y" />
+			<column name="seo_name" type="text" jt="12" />
+			<column name="img" type="text" jt="12" />
+			<index name="pk_food_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="grapes" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="name" type="text" jt="12" />
+			<column name="seo_name" type="text" jt="12" />
+			<index name="pk_grapes_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="regions" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="name" type="text" jt="12" />
+			<column name="seo_name" type="text" jt="12" />
+			<column name="country_code" type="text" jt="12" />
+			<index name="pk_regions_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="regions_fk0" to_schema="public" to_table="countries" delete_action="setNull" update_action="cascade" >
+				<fk_column name="country_code" pk="code" />
+			</fk>
+		</table>
+		<table name="reviews" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="user_id" type="integer" jt="4" mandatory="y" />
+			<column name="vintage_id" type="integer" jt="4" mandatory="y" />
+			<column name="note" type="text" jt="12" mandatory="y" />
+			<column name="rating" type="float8" jt="6" mandatory="y" />
+			<index name="pk_reviews_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="reviews_fk0" to_schema="public" to_table="users" delete_action="cascade" update_action="cascade" >
+				<fk_column name="user_id" pk="id" />
+			</fk>
+			<fk name="reviews_fk1" to_schema="public" to_table="vintages" delete_action="cascade" update_action="cascade" >
+				<fk_column name="vintage_id" pk="id" />
+			</fk>
+		</table>
+		<table name="style_food_pairings" >
+			<column name="style_id" type="integer" jt="4" mandatory="y" />
+			<column name="food_id" type="integer" jt="4" mandatory="y" />
+			<index name="_1" unique="PRIMARY_KEY" >
+				<column name="style_id" />
+				<column name="food_id" />
+			</index>
+			<fk name="style_food_pairings_fk0" to_schema="public" to_table="styles" delete_action="cascade" update_action="cascade" >
+				<fk_column name="style_id" pk="id" />
+			</fk>
+			<fk name="style_food_pairings_fk1" to_schema="public" to_table="food" delete_action="cascade" update_action="cascade" >
+				<fk_column name="food_id" pk="id" />
+			</fk>
+		</table>
+		<table name="style_grapes_pairings" >
+			<column name="style_id" type="integer" jt="4" mandatory="y" />
+			<column name="grape_id" type="integer" jt="4" mandatory="y" />
+			<index name="_0" unique="PRIMARY_KEY" >
+				<column name="style_id" />
+				<column name="grape_id" />
+			</index>
+			<fk name="style_grapes_pairings_fk0" to_schema="public" to_table="styles" delete_action="cascade" update_action="cascade" >
+				<fk_column name="style_id" pk="id" />
+			</fk>
+			<fk name="style_grapes_pairings_fk1" to_schema="public" to_table="grapes" delete_action="cascade" update_action="cascade" >
+				<fk_column name="grape_id" pk="id" />
+			</fk>
+		</table>
+		<table name="styles" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="name" type="text" jt="12" />
+			<index name="pk_styles_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="users" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="seo_name" type="text" jt="12" mandatory="y" />
+			<column name="alias" type="text" jt="12" mandatory="y" />
+			<column name="img" type="text" jt="12" />
+			<index name="pk_users_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="vintages" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="name" type="text" jt="12" />
+			<column name="seo_name" type="text" jt="12" />
+			<column name="year" type="text" jt="12" />
+			<column name="wine_id" type="integer" jt="4" />
+			<column name="img" type="text" jt="12" />
+			<column name="price" type="float8" jt="6" />
+			<column name="ratings_sum" type="float8" jt="6" >
+				<defo>0</defo>
+			</column>
+			<column name="ratings_count" type="float8" jt="6" >
+				<defo>0</defo>
+			</column>
+			<index name="pk_vintages_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="vintages_fk0" to_schema="public" to_table="wines" delete_action="setNull" update_action="cascade" >
+				<fk_column name="wine_id" pk="id" />
+			</fk>
+		</table>
+		<table name="wineries" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="name" type="text" jt="12" />
+			<column name="seo_name" type="text" jt="12" />
+			<index name="pk_wineries_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="wines" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="name" type="text" jt="12" />
+			<column name="seo_name" type="text" jt="12" />
+			<column name="style" type="integer" jt="4" />
+			<column name="region_id" type="integer" jt="4" />
+			<column name="winery_id" type="integer" jt="4" />
+			<column name="type_id" type="integer" jt="4" mandatory="y" />
+			<column name="ratings_sum" type="float8" jt="6" >
+				<defo>0</defo>
+			</column>
+			<column name="ratings_count" type="float8" jt="6" >
+				<defo>0</defo>
+			</column>
+			<index name="pk_wines_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="wines_fk0" to_schema="public" to_table="styles" delete_action="setNull" update_action="cascade" >
+				<fk_column name="style" pk="id" />
+			</fk>
+			<fk name="wines_fk1" to_schema="public" to_table="regions" delete_action="setNull" update_action="cascade" >
+				<fk_column name="region_id" pk="id" />
+			</fk>
+			<fk name="wines_fk2" to_schema="public" to_table="wineries" delete_action="setNull" update_action="cascade" >
+				<fk_column name="winery_id" pk="id" />
+			</fk>
+		</table>
+		<trigger name="Trigger" id="Trigger_1fa4751" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.inc_rev_f()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = NEW.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER inc_rev AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE inc_rev_f();]]></string>
+		</trigger>
+		<trigger name="Trigger_001" id="Trigger_439f4de" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.dec_rev_f()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count - 1, ratings_sum = ratings_sum - OLD.rating WHERE vintages.id = OLD.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count - 1, ratings_sum = ratings_sum - OLD.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = OLD.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER dec_rev BEFORE DELETE ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE dec_rev_f();]]></string>
+		</trigger>
+	</schema>
+	<connector name="" database="MySql" host="localhost" port="3306" user="root" />
+	<layout name="Parsed Script Layout" id="Layout_514f57c" joined_routing="y" show_column_type="y" show_relation="cascade" >
+		<entity schema="public" name="wineries" color="BED3F4" x="48" y="336" />
+		<entity schema="public" name="reviews" color="C7F4BE" x="880" y="80" />
+		<entity schema="public" name="grapes" color="BED3F4" x="208" y="176" />
+		<entity schema="public" name="style_grapes_pairings" color="BED3F4" x="384" y="224" />
+		<entity schema="public" name="style_food_pairings" color="BED3F4" x="416" y="80" />
+		<entity schema="public" name="food" color="BED3F4" x="192" y="48" />
+		<entity schema="public" name="countries" color="BED3F4" x="240" y="368" />
+		<entity schema="public" name="styles" color="BED3F4" x="672" y="240" />
+		<entity schema="public" name="users" color="C7F4BE" x="672" y="64" />
+		<entity schema="public" name="wines" color="BED3F4" x="672" y="400" />
+		<entity schema="public" name="regions" color="BED3F4" x="384" y="352" />
+		<entity schema="public" name="vintages" color="C7F4BE" x="976" y="304" />
+		<script name="1233.sql" id="Editor_2a9ea6d" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "default";
+
+CREATE TABLE countries ( 
+	code               text  NOT NULL ,
+	name               text   
+ );
+
+CREATE INDEX primary ON countries ( code );
+
+CREATE TABLE food ( 
+	id                 oid  NOT NULL ,
+	name               text  NOT NULL ,
+	seo_name           text   ,
+	img                text   
+ );
+
+CREATE INDEX primary ON food ( id );
+
+CREATE TABLE regions ( 
+	id                 oid  NOT NULL ,
+	name               text   ,
+	seo_name           text   ,
+	country_code       text  NOT NULL ,
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE INDEX primary ON regions ( id );
+
+CREATE TABLE styles ( 
+	id                 oid  NOT NULL ,
+	name               text   
+ );
+
+CREATE INDEX primary ON styles ( id );
+
+CREATE TABLE users ( 
+	id                 oid  NOT NULL ,
+	seo_name           text  NOT NULL ,
+	alias              text  NOT NULL 
+ );
+
+CREATE INDEX primary ON users ( id );
+
+CREATE TABLE wineries ( 
+	id                 oid  NOT NULL ,
+	name               text   ,
+	seo_name           text   
+ );
+
+CREATE INDEX primary ON wineries ( id );
+
+CREATE TABLE wines ( 
+	id                 oid  NOT NULL ,
+	name               text   ,
+	seo_name           text   ,
+	style              oid   ,
+	region_id          oid  NOT NULL ,
+	winery_id          oid  NOT NULL ,
+	CONSTRAINT wines_fk0 FOREIGN KEY ( style ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE INDEX primary ON wines ( id );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   
+ );
+
+CREATE INDEX primary ON grapes ( id );
+
+CREATE TABLE style_food_pairings ( 
+	style_id           oid  NOT NULL ,
+	food_id            oid  NOT NULL ,
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE INDEX primary ON style_food_pairings ( style_id, food_id );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id           oid  NOT NULL ,
+	grape_id           oid  NOT NULL ,
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE INDEX primary ON style_grapes_pairings ( style_id, grape_id );
+
+CREATE TABLE vintages ( 
+	id                 oid  NOT NULL ,
+	name               text   ,
+	seo_name           text   ,
+	year               text   ,
+	wine_id            oid  NOT NULL ,
+	img                text   ,
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE INDEX primary ON vintages ( id );
+
+CREATE TABLE reviews ( 
+	id                 oid  NOT NULL ,
+	user_id            oid  NOT NULL ,
+	vintage_id         oid  NOT NULL ,
+	note               text  NOT NULL ,
+	rating             float8  NOT NULL ,
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE INDEX primary ON reviews ( id );
+]]></string>
+		</script>
+		<script name="Sql_Editor" id="Editor_1ea4b0e" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "Default";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   
+ );
+
+CREATE INDEX primary ON countries ( code );
+
+CREATE TABLE food ( 
+	id                   oid  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   
+ );
+
+CREATE INDEX primary ON food ( id );
+
+CREATE TABLE grapes ( 
+	id                   year  NOT NULL ,
+	name                 text   ,
+	seo_name             text   
+ );
+
+CREATE INDEX primary ON grapes ( id );
+
+CREATE TABLE regions ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE INDEX primary ON regions ( id );
+
+CREATE TABLE styles ( 
+	id                   oid  NOT NULL ,
+	name                 text   
+ );
+
+CREATE INDEX primary ON styles ( id );
+
+CREATE TABLE users ( 
+	id                   oid  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL 
+ );
+
+CREATE INDEX primary ON users ( id );
+
+CREATE TABLE wineries ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   
+ );
+
+CREATE INDEX primary ON wineries ( id );
+
+CREATE TABLE wines ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              oid   ,
+	region_id            oid  NOT NULL ,
+	winery_id            oid  NOT NULL ,
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE INDEX primary ON wines ( id );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             oid  NOT NULL ,
+	food_id              oid  NOT NULL ,
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE INDEX primary ON style_food_pairings ( style_id, food_id );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             oid  NOT NULL ,
+	grape_id             oid  NOT NULL ,
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE INDEX primary ON style_grapes_pairings ( style_id, grape_id );
+
+CREATE TABLE vintages ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              oid  NOT NULL ,
+	img                  text   ,
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE INDEX primary ON vintages ( id );
+
+CREATE TABLE reviews ( 
+	id                   oid  NOT NULL ,
+	user_id              oid  NOT NULL ,
+	vintage_id           oid  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE INDEX primary ON reviews ( id );
+]]></string>
+		</script>
+		<script name="Sql_Editor_001" id="Editor_2d79462" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "Default";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   
+ );
+
+CREATE INDEX primary ON countries ( code );
+
+CREATE TABLE food ( 
+	id                   oid  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   
+ );
+
+CREATE INDEX primary ON food ( id );
+
+CREATE TABLE grapes ( 
+	id                   year  NOT NULL ,
+	name                 text   ,
+	seo_name             text   
+ );
+
+CREATE INDEX primary ON grapes ( id );
+
+CREATE TABLE regions ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL 
+ );
+
+CREATE INDEX primary ON regions ( id );
+
+CREATE TABLE styles ( 
+	id                   oid  NOT NULL ,
+	name                 text   
+ );
+
+CREATE INDEX primary ON styles ( id );
+
+CREATE TABLE users ( 
+	id                   oid  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL 
+ );
+
+CREATE INDEX primary ON users ( id );
+
+CREATE TABLE wineries ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   
+ );
+
+CREATE INDEX primary ON wineries ( id );
+
+CREATE TABLE wines ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              oid   ,
+	region_id            oid  NOT NULL ,
+	winery_id            oid  NOT NULL 
+ );
+
+CREATE INDEX primary ON wines ( id );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             oid  NOT NULL ,
+	food_id              oid  NOT NULL 
+ );
+
+CREATE INDEX primary ON style_food_pairings ( style_id, food_id );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             oid  NOT NULL ,
+	grape_id             oid  NOT NULL 
+ );
+
+CREATE INDEX primary ON style_grapes_pairings ( style_id, grape_id );
+
+CREATE TABLE vintages ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              oid  NOT NULL ,
+	img                  text   
+ );
+
+CREATE INDEX primary ON vintages ( id );
+
+CREATE TABLE reviews ( 
+	id                   oid  NOT NULL ,
+	user_id              oid  NOT NULL ,
+	vintage_id           oid  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL 
+ );
+
+CREATE INDEX primary ON reviews ( id );
+
+ALTER TABLE regions ADD CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code );
+
+ALTER TABLE reviews ADD CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id );
+
+ALTER TABLE reviews ADD CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id );
+
+ALTER TABLE style_food_pairings ADD CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id );
+
+ALTER TABLE style_food_pairings ADD CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id );
+
+ALTER TABLE style_grapes_pairings ADD CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id );
+
+ALTER TABLE style_grapes_pairings ADD CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id );
+
+ALTER TABLE vintages ADD CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id );
+
+ALTER TABLE wines ADD CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id );
+
+ALTER TABLE wines ADD CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id );
+
+ALTER TABLE wines ADD CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id );
+]]></string>
+		</script>
+		<script name="Sql_Editor_002" id="Editor_3bf38c5" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "Default";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   
+ );
+
+CREATE INDEX primary ON countries ( code );
+
+CREATE TABLE food ( 
+	id                   oid  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   
+ );
+
+CREATE INDEX primary ON food ( id );
+
+CREATE TABLE grapes ( 
+	id                   year  NOT NULL ,
+	name                 text   ,
+	seo_name             text   
+ );
+
+CREATE INDEX primary ON grapes ( id );
+
+CREATE TABLE regions ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE INDEX primary ON regions ( id );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE INDEX primary ON styles ( id );
+
+CREATE TABLE users ( 
+	id                   oid  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL 
+ );
+
+CREATE INDEX primary ON users ( id );
+
+CREATE TABLE wineries ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   
+ );
+
+CREATE INDEX primary ON wineries ( id );
+
+CREATE TABLE wines ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              oid   ,
+	region_id            oid  NOT NULL ,
+	winery_id            oid  NOT NULL ,
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE INDEX primary ON wines ( id );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             oid  NOT NULL ,
+	food_id              oid  NOT NULL ,
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE INDEX primary ON style_food_pairings ( style_id, food_id );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             oid  NOT NULL ,
+	grape_id             oid  NOT NULL ,
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE INDEX primary ON style_grapes_pairings ( style_id, grape_id );
+
+CREATE TABLE vintages ( 
+	id                   oid  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              oid  NOT NULL ,
+	img                  text   ,
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE INDEX primary ON vintages ( id );
+
+CREATE TABLE reviews ( 
+	id                   oid  NOT NULL ,
+	user_id              oid  NOT NULL ,
+	vintage_id           oid  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE INDEX primary ON reviews ( id );
+]]></string>
+		</script>
+		<script name="Sql_Editor_003" id="Editor_179fc33" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "Default";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              oid  NOT NULL ,
+	img                  text   ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+]]></string>
+		</script>
+		<script name="Sql_Editor_004" id="Editor_4b37d1b" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "Default";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+]]></string>
+		</script>
+		<script name="Sql_Editor_005" id="Editor_14170ed" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );]]></string>
+		</script>
+		<script name="Sql_Editor_006" id="Editor_28b357f" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	rating_sum           float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );]]></string>
+		</script>
+		<script name="Sql_Editor_007" id="Editor_5366dc2" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	rating_sum           float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );]]></string>
+		</script>
+		<script name="Sql_Editor_008" id="Editor_34e0757" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	rating_sum           float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE OR REPLACE FUNCTION public.func_trg()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+  UPDATE vintages SET vintages.ratings_count = vintages.ratings_count + 1, vintages.rating_sum = vintages.rating_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+END;
+$function$
+
+CREATE TRIGGER xxx AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE func_trg();]]></string>
+		</script>
+		<script name="Sql_Editor_009" id="Editor_52bc8cf" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	rating_sum           float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE OR REPLACE FUNCTION public.func_trg()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+  UPDATE vintages SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+END;
+$function$;
+
+CREATE TRIGGER xxx AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE func_trg();]]></string>
+		</script>
+		<script name="Sql_Editor_010" id="Editor_5558c12" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	rating_sum           float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE OR REPLACE FUNCTION public.func_trg()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+  UPDATE vintages SET ratings_count = vintages.ratings_count + 1, ratings_sum = vintages.ratings_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+END;
+$function$;
+
+CREATE TRIGGER xxx AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE func_trg();]]></string>
+		</script>
+		<script name="Sql_Editor_011" id="Editor_2ae9f76" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	rating_sum           float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE OR REPLACE FUNCTION public.func_trg()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+  UPDATE vintages SET ratings_count = ratings_count + 1, rating_sum = rating_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER xxx AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE func_trg();]]></string>
+		</script>
+		<script name="Sql_Editor_012" id="Editor_408d504" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	rating_sum           float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE OR REPLACE FUNCTION public.func_trg()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+  UPDATE vintages SET ratings_count = ratings_count + 1, rating_sum = rating_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+END;
+$function$;
+
+CREATE TRIGGER xxx AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE func_trg();]]></string>
+		</script>
+		<script name="Sql_Editor_013" id="Editor_2e79a84" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	rating_sum           float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE OR REPLACE FUNCTION public.func_trg()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+  UPDATE vintages SET ratings_count = ratings_count + 1, rating_sum = rating_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER xxx AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE func_trg();]]></string>
+		</script>
+		<script name="Sql_Editor_014" id="Editor_46b8746" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE OR REPLACE FUNCTION public.func_trg()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = NEW.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER xxx AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE func_trg();]]></string>
+		</script>
+		<script name="Sql_Editor_015" id="Editor_2e590ef" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE OR REPLACE FUNCTION public.func_trg()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = NEW.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER xxx AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE func_trg();]]></string>
+		</script>
+		<script name="Sql_Editor_016" id="Editor_297af63" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text  NOT NULL ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code )  
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer  NOT NULL ,
+	winery_id            integer  NOT NULL ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id )  ,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id )  ,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id )  
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id )  
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id )  ,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id )  
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer  NOT NULL ,
+	img                  text   ,
+	price                float8   ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id )  
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id )  ,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id )  
+ );
+
+CREATE OR REPLACE FUNCTION public.inc_rev_f()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = NEW.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER inc_rev AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE inc_rev_f();
+
+CREATE OR REPLACE FUNCTION public.dec_rev_f()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count - 1, ratings_sum = ratings_sum - OLD.rating WHERE vintages.id = OLD.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count - 1, ratings_sum = ratings_sum - OLD.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = OLD.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER dec_rev AFTER DELETE ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE dec_rev_f();]]></string>
+		</script>
+		<script name="Sql_Editor_017" id="Editor_5c44301" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text   ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code ) ON DELETE SET NULL ON UPDATE CASCADE
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	img                  text   ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer   ,
+	winery_id            integer   ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id ) ON DELETE SET NULL ON UPDATE CASCADE,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id ) ON DELETE SET NULL ON UPDATE CASCADE,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id ) ON DELETE SET NULL ON UPDATE CASCADE
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer   ,
+	img                  text   ,
+	price                float8   ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id ) ON DELETE SET NULL ON UPDATE CASCADE
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE OR REPLACE FUNCTION public.inc_rev_f()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = NEW.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER inc_rev AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE inc_rev_f();
+
+CREATE OR REPLACE FUNCTION public.dec_rev_f()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count - 1, ratings_sum = ratings_sum - OLD.rating WHERE vintages.id = OLD.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count - 1, ratings_sum = ratings_sum - OLD.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = OLD.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER dec_rev BEFORE DELETE ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE dec_rev_f();
+]]></string>
+		</script>
+		<script name="Sql_Editor_018" id="Editor_7a77bd" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA "public";
+
+CREATE TABLE countries ( 
+	code                 text  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_countries_code PRIMARY KEY ( code )
+ );
+
+CREATE TABLE food ( 
+	id                   integer  NOT NULL ,
+	name                 text  NOT NULL ,
+	seo_name             text   ,
+	img                  text   ,
+	CONSTRAINT pk_food_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE grapes ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_grapes_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE regions ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	country_code         text   ,
+	CONSTRAINT pk_regions_id PRIMARY KEY ( id ),
+	CONSTRAINT regions_fk0 FOREIGN KEY ( country_code ) REFERENCES countries( code ) ON DELETE SET NULL ON UPDATE CASCADE
+ );
+
+CREATE TABLE styles ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	CONSTRAINT pk_styles_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE users ( 
+	id                   integer  NOT NULL ,
+	seo_name             text  NOT NULL ,
+	"alias"              text  NOT NULL ,
+	img                  text   ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wineries ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	CONSTRAINT pk_wineries_id PRIMARY KEY ( id )
+ );
+
+CREATE TABLE wines ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"style"              integer   ,
+	region_id            integer   ,
+	winery_id            integer   ,
+	type_id              integer  NOT NULL ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_wines_id PRIMARY KEY ( id ),
+	CONSTRAINT wines_fk0 FOREIGN KEY ( "style" ) REFERENCES styles( id ) ON DELETE SET NULL ON UPDATE CASCADE,
+	CONSTRAINT wines_fk1 FOREIGN KEY ( region_id ) REFERENCES regions( id ) ON DELETE SET NULL ON UPDATE CASCADE,
+	CONSTRAINT wines_fk2 FOREIGN KEY ( winery_id ) REFERENCES wineries( id ) ON DELETE SET NULL ON UPDATE CASCADE
+ );
+
+CREATE TABLE style_food_pairings ( 
+	style_id             integer  NOT NULL ,
+	food_id              integer  NOT NULL ,
+	CONSTRAINT _1 PRIMARY KEY ( style_id, food_id ),
+	CONSTRAINT style_food_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT style_food_pairings_fk1 FOREIGN KEY ( food_id ) REFERENCES food( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE style_grapes_pairings ( 
+	style_id             integer  NOT NULL ,
+	grape_id             integer  NOT NULL ,
+	CONSTRAINT _0 PRIMARY KEY ( style_id, grape_id ),
+	CONSTRAINT style_grapes_pairings_fk0 FOREIGN KEY ( style_id ) REFERENCES styles( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT style_grapes_pairings_fk1 FOREIGN KEY ( grape_id ) REFERENCES grapes( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE vintages ( 
+	id                   integer  NOT NULL ,
+	name                 text   ,
+	seo_name             text   ,
+	"year"               text   ,
+	wine_id              integer   ,
+	img                  text   ,
+	price                float8   ,
+	ratings_sum          float8 DEFAULT 0  ,
+	ratings_count        float8 DEFAULT 0  ,
+	CONSTRAINT pk_vintages_id PRIMARY KEY ( id ),
+	CONSTRAINT vintages_fk0 FOREIGN KEY ( wine_id ) REFERENCES wines( id ) ON DELETE SET NULL ON UPDATE CASCADE
+ );
+
+CREATE TABLE reviews ( 
+	id                   integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	vintage_id           integer  NOT NULL ,
+	note                 text  NOT NULL ,
+	rating               float8  NOT NULL ,
+	CONSTRAINT pk_reviews_id PRIMARY KEY ( id ),
+	CONSTRAINT reviews_fk0 FOREIGN KEY ( user_id ) REFERENCES users( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT reviews_fk1 FOREIGN KEY ( vintage_id ) REFERENCES vintages( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE OR REPLACE FUNCTION public.inc_rev_f()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE vintages.id = NEW.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count + 1, ratings_sum = ratings_sum + NEW.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = NEW.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER inc_rev AFTER INSERT ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE inc_rev_f();
+
+CREATE OR REPLACE FUNCTION public.dec_rev_f()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	UPDATE vintages SET ratings_count = ratings_count - 1, ratings_sum = ratings_sum - OLD.rating WHERE vintages.id = OLD.vintage_id;
+	UPDATE wines SET ratings_count = ratings_count - 1, ratings_sum = ratings_sum - OLD.rating WHERE wines.id = (SELECT vintages.wine_id FROM vintages WHERE vintages.id = OLD.vintage_id LIMIT 1);
+	RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER dec_rev BEFORE DELETE ON reviews
+                FOR EACH ROW EXECUTE PROCEDURE dec_rev_f();
+]]></string>
+		</script>
+	</layout>
+</project>

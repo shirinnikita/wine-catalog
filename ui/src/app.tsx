@@ -4,7 +4,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import {createMuiTheme} from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 
-
+import GrapesPage from './components/grapes'
 import FoodPage from "./components/food";
 import {VintagePage, VintagesPage} from "./components/vintage";
 
@@ -65,10 +65,10 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     <Navigation/>
                     <Switch>
-                        {/*<Route path="/" component={Home} exact />*/}
+                        <Route path="/" component={VintagesPage} exact />
                         <Route path="/food_page" component={FoodPage}/>
                         <Route path="/vintages_page" component={VintagesPage}/>
-
+                        <Route path="/grapes_page" component={GrapesPage}/>
                         <Route path="/vintage/:id" component={VintagePage}/>
                         <Route component={Error}/>
                     </Switch>
