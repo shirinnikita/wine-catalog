@@ -72,10 +72,10 @@ export class VintagesPage extends Component<Props, State> {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Dessert (100g serving)</TableCell>
-                                <TableCell>Calories</TableCell>
-                                <TableCell>Fat (g)</TableCell>
-                                <TableCell>Carbs (g)</TableCell>
+                                <TableCell>1</TableCell>
+                                <TableCell>2</TableCell>
+                                <TableCell>3</TableCell>
+                                <TableCell>4</TableCell>
                             </TableRow>
                         </TableHead>
 
