@@ -119,7 +119,7 @@ def list_regions():
 @app.route('/api/list_wines', methods=['GET', 'POST'])
 def list_wines():
     sample = db.session.query(Wines).all()
-    return jsonify(Wines(many=True).dump(sample).data)
+    return jsonify(WineSchema(many=True).dump(sample).data)
 
 
 @app.route('/api/vintage/<vintage_id>', methods=['GET'])

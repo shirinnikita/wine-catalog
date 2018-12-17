@@ -8,10 +8,11 @@ import Paper from '@material-ui/core/Paper';
 import ListItemText from '@material-ui/core/ListItemText';
 import {Link} from "react-router-dom";
 import Input from "@material-ui/core/Input";
+import {Wine} from "../model/wine";
 
 
 interface State {
-    elems: FoodPiece[];
+    elems: Wine[];
     nameFilter: string;
 }
 
@@ -19,7 +20,7 @@ interface Props {
 
 }
 
-export class FoodsPage extends React.Component<Props, State> {
+export class WinesPage extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {elems: [], nameFilter: ''};
@@ -27,7 +28,7 @@ export class FoodsPage extends React.Component<Props, State> {
     }
 
     public componentDidMount() {
-        fetch('http://localhost:5000/api/list_food')
+        fetch('http://localhost:5000/api/list_wines')
             .then(response => response.json())
             .then((res) => {
                 this.setState({elems: res});
@@ -55,7 +56,7 @@ export class FoodsPage extends React.Component<Props, State> {
                                     .filter(e => (e.name.toLowerCase().indexOf(this.state.nameFilter.toLowerCase()) > -1))
                                     .map((e) => {
                                         return (
-                                            <Link to={`filter_styles/${e.id}`}>
+                                            <Link to={`/filter_wines/${e.id}`}>
                                                 <ListItem>
                                                     <ListItemText
                                                         primary={e.name}
@@ -73,4 +74,4 @@ export class FoodsPage extends React.Component<Props, State> {
     }
 }
 
-export default FoodsPage;
+export default WinesPage;

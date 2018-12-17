@@ -14,6 +14,8 @@ import {GrapesFilter} from './components/filterGrapes'
 import FoodFilter from "./components/filterFood";
 import {StylesFilter} from "./components/filterStyle";
 import StylesPage from "./components/styles";
+import WineFilter from './components/filterWine'
+import WinesPage from "./components/wines";
 
 
 const theme = createMuiTheme({
@@ -76,11 +78,13 @@ class App extends Component {
                         <Route path="/styles_page" component={StylesPage}/>
 
 
-                        <Route path="/grapes_page" component={GrapesPage}/>
+                        <Route path="/wines_page" component={WinesPage}/>
                         <Route path="/vintage/:id" component={VintagePage}/>
 
                         <Route path="/filter_foods/:id" component={FoodFilter}/>
                         <Route path="/filter_styles/:id" component={StylesFilter}/>
+
+                        <Route path="/filter_wines/:id" component={WineFilter}/>
 
                         <Route path="/filter_grapes/:id" component={GrapesFilter}/>
                         <Route component={Error}/>

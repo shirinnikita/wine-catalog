@@ -90,19 +90,20 @@ export class VintagePage extends Component<RouteComponentProps & Props, Vintage>
                     <Divider/>
                     {this.state.wines.style ?
                         <div>{'Made of:'}
-                        {
-                            this.state.wines.styles.grapes_collection.map((g) => {
-                                return <Link to={`/filter_grapes/${g.id}`}> {g.name}</Link>
-                            })
-                        }
-                        <Divider/>
-                    {'Good complements are:'}
-                    {this.state.wines.styles.food_collection.map((fp) => {
-                        return <Link to={`/filter_foods/${fp.id}`}> {fp.name}</Link>
-                    })}
-                        <Divider/>
-                    {'More with style'}
-                            <Link to={`/${this.state.wines.style}`}> {this.state.wines.styles.name}</Link></div>
+                            {
+                                this.state.wines.styles.grapes_collection.map((g) => {
+                                    return <Link to={`/filter_grapes/${g.id}`}> {g.name}</Link>
+                                })
+                            }
+                            <Divider/>
+                            {'Good complements are:'}
+                            {this.state.wines.styles.food_collection.map((fp) => {
+                                return <Link to={`/filter_foods/${fp.id}`}> {fp.name}</Link>
+                            })}
+                            <Divider/>
+                            {'More with style'}
+                            <Link to={`/filter_styles/${this.state.wines.style}`}> {this.state.wines.styles.name}</Link>
+                        </div>
                         :
                         'No style'
                     }
@@ -110,7 +111,7 @@ export class VintagePage extends Component<RouteComponentProps & Props, Vintage>
                     {this.state.price != 0 ?
                         (<div><Typography variant="h4" gutterBottom> {`${this.state.price}₽`}</Typography>
                             < Divider/>
-                            </div>)
+                        </div>)
                         :
                         <div/>
                     }
@@ -126,7 +127,7 @@ export class VintagePage extends Component<RouteComponentProps & Props, Vintage>
                             :
                             'No reviews yet')}
                     <Divider/>
-                    <Link to={`/${this.state.wines.id}`}> More years</Link>
+                    <Link to={`/filter_wines/${this.state.wines.id}`}> More years</Link>
 
                 </Paper>
                 <Paper>

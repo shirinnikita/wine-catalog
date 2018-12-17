@@ -26,6 +26,9 @@ class Navigation extends Component {
                <NavLink to="/styles_page" style={{ textDecoration: 'none' }}>
                    <Button>Styles</Button>
                </NavLink>
+               <NavLink to="/wines_page" style={{ textDecoration: 'none' }}>
+                   <Button>Wines</Button>
+               </NavLink>
 
            </Toolbar>
        </AppBar>)
