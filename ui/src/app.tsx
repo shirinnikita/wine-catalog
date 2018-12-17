@@ -45,8 +45,13 @@ const theme = createMuiTheme({
                 root: {
                     marginBottom: "0px",
                 }
+            },
+            MuiPaper: {
+                root: {
+                    margin: "15px",
+                    padding: "30px"
+,               }
             }
-
         },
 
     }

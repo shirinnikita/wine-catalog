@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 
 class Navigation extends Component {
    render() {
-       return (<AppBar position="static" color="default" >
+       return (<AppBar style={{padding: '0% 2%', width: '98%'}} position='relative' color="default" >
            <Toolbar>
                <Typography variant="h6" color="inherit" noWrap >
                    Wine catalog

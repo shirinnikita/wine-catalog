@@ -10,6 +10,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import Paper from '@material-ui/core/Paper';
+
 
 
 const type_to_name = {
@@ -147,7 +149,7 @@ export class VintageFilter extends Component <Props, VintageFilterState> {
     }
 
     render() {
-        return (<div>
+        return (<Paper>
                 <FormControl>
                     <FormGroup>
                         <FormLabel>Wine type</FormLabel>
@@ -241,7 +243,7 @@ export class VintageFilter extends Component <Props, VintageFilterState> {
                     </Button>
                 </FormControl>
 
-            </div>
+            </Paper>
 
         )
             ;
