@@ -56,7 +56,7 @@ ma = Marshmallow(app)
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'seo_name', 'alias', 'img')
+        fields = ('id', 'pass', 'alias', 'img')
 
 class MockFoodSchema(ma.Schema):
     class Meta:
@@ -121,10 +121,12 @@ def get_vintage(vintage_id):
     vintage = db.session.query(Vintages).filter(Vintages.id == vintage_id).first()
     return jsonify(VintageSchema().dump(vintage).data)
 
+
 @app.route('/api/gv/<grapes_id>', methods=['GET'])
 def grapes_filter(grapes_id):
     sample = db.session.query(Vintages).filter(Vintages.wines.style_collection.grapes == grapes_id).all()
     return jsonify(VintagesSchema(many=True).dump(sample).data)
+
 
 @app.route('/api/list_food', methods=['GET', 'POST'])
 def list_food():
@@ -147,6 +149,8 @@ def list_vintages():
     min_rating = float(request.json.get('min_rating', 0))
     min_price = float(request.json.get('price_from', 0))
     max_price = float(request.json.get('price_to', 9999999))
+    sort_type = int(request.json.get('sort_by'))
+
     if wine_types:
         filters.append(
                 db.session.query(Vintages)
@@ -171,9 +175,16 @@ def list_vintages():
         .filter(Vintages.price.between(min_price, max_price))
     )
 
-    sample = db.session.query(Vintages).intersect(*filters).all()
+    query = db.session.query(Vintages).intersect(*filters)
 
-    return jsonify(VintagesSchema(many=True).dump(sample).data)
+    # if sort_type == 1:
+    #     query = query.order_by(Vintages.price.asc())
+    # elif sort_type == 2:
+    #     query = query.order_by(Vintages.price.desc())
+    # elif sort_type == 3:
+    #
+
+    return jsonify(VintagesSchema(many=True).dump(query.all()).data)
 
 
 if __name__ == '__main__':
