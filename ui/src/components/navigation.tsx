@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 
-
 class Navigation extends Component {
    render() {
        return (<AppBar style={{padding: '0% 2%', width: '98%'}} position='relative' color="default" >
@@ -28,6 +27,9 @@ class Navigation extends Component {
                </NavLink>
                <NavLink to="/wines_page" style={{ textDecoration: 'none' }}>
                    <Button>Wines</Button>
+               </NavLink>
+               <NavLink to="/reg" style={{ textDecoration: 'none' }}>
+                   <Button>Register</Button>
                </NavLink>
 
            </Toolbar>

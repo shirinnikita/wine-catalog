@@ -4,7 +4,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import func
 from flask_cors import CORS
 from flask_marshmallow import Marshmallow
-import time
+import random
 
 app = Flask(__name__, static_folder='../static/dist', template_folder='../static')
 app.debug = True
@@ -37,7 +37,6 @@ def sql_debug(response):
 
 app.after_request(sql_debug)
 
-
 # reflection
 
 Base = automap_base()
@@ -54,13 +53,16 @@ Users = Base.classes['users']
 
 ma = Marshmallow(app)
 
+
 class UserSchema(ma.Schema):
     class Meta:
         fields = ('id', 'pass', 'alias', 'img')
 
+
 class MockFoodSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'seo_name', 'img')
+
 
 class MockGrapeSchema(ma.Schema):
     class Meta:
@@ -70,43 +72,50 @@ class MockGrapeSchema(ma.Schema):
 class StyleSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'food_collection', 'grapes_collection')
+
     food_collection = ma.Nested(MockFoodSchema, many=True)
     grapes_collection = ma.Nested(MockGrapeSchema, many=True)
-
 
 
 class ReviewSchema(ma.Schema):
     class Meta:
         fields = ('id', 'user_id', 'vintage_id', 'note', 'rating', 'users')
+
     users = ma.Nested(UserSchema)
 
 
 class WineSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'seo_name', 'style', 'region_id', 'winery_id', 'styles')
+
     styles = ma.Nested(StyleSchema)
 
 
 class VintagesSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'seo_name', 'year', 'wine_id', 'img', 'wines', 'ratings_count', 'ratings_sum', 'price')
+
     wines = ma.Nested(WineSchema)
 
 
 class VintageSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'seo_name', 'year', 'wine_id', 'img', 'wines', 'ratings_count', 'ratings_sum', 'price', 'reviews_collection')
+        fields = ('id', 'name', 'seo_name', 'year', 'wine_id', 'img', 'wines', 'ratings_count', 'ratings_sum', 'price',
+                  'reviews_collection')
 
     reviews_collection = ma.Nested(ReviewSchema, many=True)
     wines = ma.Nested(WineSchema)
+
 
 class FoodSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'seo_name', 'img')
 
+
 class GrapeSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'seo_name', 'styles_collection')
+
     styles_collection = ma.Nested(StyleSchema, many=True)
 
 
@@ -132,10 +141,10 @@ def get_vintage(vintage_id):
 def food_filter(grapes_id):
     sample = (
         db.session.query(Vintages)
-        .join(Wines)
-        .join(Styles)
-        .filter(Styles.grapes_collection.any(Grapes.id == grapes_id))
-        .all()
+            .join(Wines)
+            .join(Styles)
+            .filter(Styles.grapes_collection.any(Grapes.id == grapes_id))
+            .all()
     )
     return jsonify(VintagesSchema(many=True).dump(sample).data)
 
@@ -144,9 +153,9 @@ def food_filter(grapes_id):
 def st_filter(st_id):
     sample = (
         db.session.query(Vintages)
-        .join(Wines)
-        .filter(Wines.style == st_id)
-        .all()
+            .join(Wines)
+            .filter(Wines.style == st_id)
+            .all()
     )
     return jsonify(VintagesSchema(many=True).dump(sample).data)
 
@@ -155,20 +164,32 @@ def st_filter(st_id):
 def grapes_filter(food_id):
     sample = (
         db.session.query(Vintages)
-        .join(Wines)
-        .join(Styles)
-        .filter(Styles.food_collection.any(Food.id == food_id))
-        .all()
+            .join(Wines)
+            .join(Styles)
+            .filter(Styles.food_collection.any(Food.id == food_id))
+            .all()
     )
     return jsonify(VintagesSchema(many=True).dump(sample).data)
+
+
+@app.route('/api/register', methods=['GET', 'POST'])
+def register():
+    usr = Users(**{'id': random.randint(0, 9999999),
+                   'alias': request.json.get('username'),
+                   'pass': request.json.get('pass')}
+                )
+    db.session.add(usr)
+    db.session.commit()
+
+    return 'OK'
 
 
 @app.route('/api/wn/<wine_id>', methods=['GET'])
 def wine_filter(wine_id):
     sample = (
         db.session.query(Vintages)
-        .filter(Vintages.wine_id == wine_id)
-        .all()
+            .filter(Vintages.wine_id == wine_id)
+            .all()
     )
     return jsonify(VintagesSchema(many=True).dump(sample).data)
 
@@ -204,26 +225,26 @@ def list_vintages():
 
     if wine_types:
         filters.append(
-                db.session.query(Vintages)
+            db.session.query(Vintages)
                 .join(Wines)
                 .filter(Wines.type_id.in_(wine_types))
         )
     if min_rating:
         filters.append(
             db.session.query(Vintages)
-            .filter(Vintages.ratings_count > 0)
-            .filter(Vintages.ratings_sum / Vintages.ratings_count > min_rating)
+                .filter(Vintages.ratings_count > 0)
+                .filter(Vintages.ratings_sum / Vintages.ratings_count > min_rating)
         )
 
     if substring:
         filters.append(
-                db.session.query(Vintages)
+            db.session.query(Vintages)
                 .filter(func.lower(Vintages.name).contains(substring))
         )
 
     filters.append(
         db.session.query(Vintages)
-        .filter(Vintages.price.between(min_price, max_price))
+            .filter(Vintages.price.between(min_price, max_price))
     )
 
     query = db.session.query(Vintages).intersect(*filters)
@@ -235,7 +256,8 @@ def list_vintages():
     elif sort_type == 3:
         query = query.filter(Vintages.ratings_count > 0).order_by((Vintages.ratings_sum / Vintages.ratings_count).asc())
     elif sort_type == 4:
-        query = query.filter(Vintages.ratings_count > 0).order_by((Vintages.ratings_sum / Vintages.ratings_count).desc())
+        query = query.filter(Vintages.ratings_count > 0).order_by(
+            (Vintages.ratings_sum / Vintages.ratings_count).desc())
     elif sort_type == 5:
         query = query.order_by(Vintages.ratings_count.asc())
     elif sort_type == 6:

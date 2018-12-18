@@ -16,6 +16,7 @@ import {StylesFilter} from "./components/filterStyle";
 import StylesPage from "./components/styles";
 import WineFilter from './components/filterWine'
 import WinesPage from "./components/wines";
+import RegisterForm from "./components/register";
 
 
 const theme = createMuiTheme({
@@ -87,6 +88,7 @@ class App extends Component {
                         <Route path="/filter_wines/:id" component={WineFilter}/>
 
                         <Route path="/filter_grapes/:id" component={GrapesFilter}/>
+                        <Route path="/reg" component={RegisterForm}/>
                         <Route component={Error}/>
                     </Switch>
                 </MuiThemeProvider>
