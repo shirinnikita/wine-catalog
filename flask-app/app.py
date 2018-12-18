@@ -1,10 +1,11 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy, get_debug_queries
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import func
 from flask_cors import CORS
 from flask_marshmallow import Marshmallow
-import random
+from sqlalchemy.sql import select
+from sqlalchemy.sql.expression import literal
 
 app = Flask(__name__, static_folder='../static/dist', template_folder='../static')
 app.debug = True
@@ -174,13 +175,14 @@ def grapes_filter(food_id):
 
 @app.route('/api/register', methods=['GET', 'POST'])
 def register():
-    usr = Users(**{'id': random.randint(0, 9999999),
-                   'alias': request.json.get('username'),
-                   'pass': request.json.get('pass')}
-                )
-    db.session.add(usr)
+    insert_user = Users.__table__.insert().from_select(
+        ['id', 'pass', 'alias'],
+        select(
+            [func.max(Users.id) + 1] + [literal(request.json.get('pass')), literal(request.json.get('username'))]
+        )
+    )
+    db.session.execute(insert_user)
     db.session.commit()
-
     return 'OK'
 
 
